@@ -13,6 +13,7 @@
 <script type="text/javascript">
   var map;
   var map2;
+  var geocoder;
   function initialize() {
     var latlng = new google.maps.LatLng(-34.397, 150.644);
     var myOptions = {
@@ -28,7 +29,8 @@
     
     google.maps.event.addListener(map, 'zoom_changed', handleZoom1)
     google.maps.event.addListener(map2, 'zoom_changed', handleZoom2)
-
+    
+    geocoder = new google.maps.Geocoder();
   }
   
   function handleZoom1() {
@@ -40,13 +42,43 @@
     if(map.getZoom() != map2.getZoom())
         map.setZoom(map2.getZoom());
   }
+  
+  function submitAddress1() {
+    var address = document.getElementById("location1").value;
+    geocoder.geocode({'address': address}, panMap1);
+  }
+  
+  function panMap1(results, status) {
+    if(status == google.maps.GeocoderStatus.OK){
+        map.setCenter(results[0].geometry.location);
+    }
+  }
+    function submitAddress2() {
+    var address = document.getElementById("location2").value;
+    geocoder.geocode({'address': address}, panMap2);
+  }
+  
+  function panMap2(results, status) {
+    if(status == google.maps.GeocoderStatus.OK){
+        map2.setCenter(results[0].geometry.location);
+    }
+  }
+
 
 </script>
 </head>
 <body onload="initialize()">
     <div id="maps" style="height: 100%; width: 100%">
-        <div id="map_canvas" style="width: 45%; height: 100%; float:left; margin: 10px"></div>
-        <div id="map_canvas2" style="width:45%; height: 100%; float:left; margin: 10px"></div>
+        <div style="height:100%; width:45%;float:left;  margin: 10px">
+        <div id="map_canvas" style="height: 100%; width:100%;"></div>
+        Location Name: <input type="text" id="location1"/>
+        <input type="submit" name="Submit" onclick="submitAddress1()"/>
+        </div>
+        <div style="height:100%; width:45%;  float:left; margin: 10px">
+        <div id="map_canvas2" style="height: 100%; width:100%; "></div>
+        Location Name: <input type="text" id="location2"/>
+        <input type="submit" name="Submit" onclick="submitAddress2()"/>
+        </div>
     </div>
 </body>
 </html>
