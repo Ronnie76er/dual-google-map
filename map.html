@@ -51,6 +51,7 @@
   function panMap1(results, status) {
     if(status == google.maps.GeocoderStatus.OK){
         map.setCenter(results[0].geometry.location);
+        map.fitBounds(results[0].geometry.viewport);
     }
   }
     function submitAddress2() {
@@ -61,7 +62,8 @@
   function panMap2(results, status) {
     if(status == google.maps.GeocoderStatus.OK){
         map2.setCenter(results[0].geometry.location);
-    }
+        map2.fitBounds(results[0].geometry.viewport);
+   }
   }
 
 
